@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fe3e565f-005f-4da4-9b37-f5be6a623f08" name="Changes" comment="feat(install angular project)">
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/.gitattributes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/src/main/java/com/openclassrooms/P3_Full_Stack_portail_locataire/P3FullStackPortailLocataireApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/src/main/java/com/openclassrooms/P3_Full_Stack_portail_locataire/entity/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/src/main/java/com/openclassrooms/P3_Full_Stack_portail_locataire/entity/Rental.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/src/main/java/com/openclassrooms/P3_Full_Stack_portail_locataire/entity/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/P3-Full-Stack-portail-locataire/src/test/java/com/openclassrooms/P3_Full_Stack_portail_locataire/P3FullStackPortailLocataireApplicationTests.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_COMMON_BRANCH" value="install_java_project" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;kenchi-san&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/kenchi-san/Developpez-le-back-end-en-utilisant-Java-et-Spring.git&quot;,
+    &quot;accountId&quot;: &quot;baef5fb6-744c-4780-ac6e-09dba68a30f5&quot;
+  }
+}</component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP8.2" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2ozus3rCwZMoVy1BI9K5qQVTNxA" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "install__java__project",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\laragon\www\projets openclassrooms\Developpez-le-back-end-en-utilisant-Java-et-Spring" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fe3e565f-005f-4da4-9b37-f5be6a623f08" name="Changes" comment="" />
+      <created>1731884928182</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1731884928182</updated>
+      <workItem from="1731884929196" duration="2304000" />
+      <workItem from="1731887271631" duration="1268000" />
+    </task>
+    <task id="LOCAL-00001" summary="feat(install java projet/entity/start repository/)">
+      <option name="closed" value="true" />
+      <created>1732041477164</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1732041477164</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat(install angular project)">
+      <option name="closed" value="true" />
+      <created>1732042900595</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732042900595</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat(install java projet/entity/start repository/)" />
+    <MESSAGE value="feat(install angular project)" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(install angular project)" />
+  </component>
+</project>
