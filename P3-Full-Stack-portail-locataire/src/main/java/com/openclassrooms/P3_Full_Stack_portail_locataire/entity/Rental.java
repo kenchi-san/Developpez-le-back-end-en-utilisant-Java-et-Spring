@@ -40,10 +40,11 @@ public class Rental {
     @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
+//   TODO a supprimer plus tard
     @PrePersist
     public void setDefaultOwner() {
         if (this.owner == null) {
-             this.owner = new User();
+            this.owner = new User();
             this.owner.setId(1);
         }
     }

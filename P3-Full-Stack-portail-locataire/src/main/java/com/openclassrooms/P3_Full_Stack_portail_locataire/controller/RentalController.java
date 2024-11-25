@@ -30,6 +30,38 @@ public class RentalController {
         return ResponseEntity.ok(savedRental);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Rental> updateRental(@PathVariable Long id, @Valid @RequestBody Rental rentalDetails) {
+//        System.out.println("ID: " + id + ", Rental Details: " + rentalDetails);
+
+        return rentalService.getRentalById(id)
+                .map(existingRental -> {
+                    if (rentalDetails.getName() != null) {
+                        existingRental.setName(rentalDetails.getName());
+                    }
+                    if (rentalDetails.getSurface() != null) {
+                        existingRental.setSurface(rentalDetails.getSurface());
+                    }
+                    if (rentalDetails.getPrice() != null) {
+                        existingRental.setPrice(rentalDetails.getPrice());
+                    }
+                    if (rentalDetails.getPicture() != null) {
+                        existingRental.setPicture(rentalDetails.getPicture());
+                    }
+                    if (rentalDetails.getDescription() != null) {
+                        existingRental.setDescription(rentalDetails.getDescription());
+                    }
+                    if (rentalDetails.getOwner() != null) {
+                        existingRental.setOwner(rentalDetails.getOwner());
+                    }
+
+                    // Sauvegarde et retour de la réponse
+                    Rental updatedRental = rentalService.saveRental(existingRental);
+                    return ResponseEntity.ok(updatedRental); // 200 OK avec l'objet mis à jour
+                })
+                .orElse(ResponseEntity.notFound().build()); // 404 si l'entité n'existe pas
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Rental> getRentalById(@PathVariable Long id) {
         return rentalService.getRentalById(id)
