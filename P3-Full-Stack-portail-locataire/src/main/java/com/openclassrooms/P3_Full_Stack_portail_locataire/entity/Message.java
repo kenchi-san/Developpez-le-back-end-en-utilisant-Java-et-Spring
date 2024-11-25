@@ -39,7 +39,6 @@ public class Message {
         this.id = id;
     }
 
-    // Getter et Setter pour rental
     public Rental getRental() {
         return rental;
     }
@@ -48,7 +47,6 @@ public class Message {
         this.rental = rental;
     }
 
-    // Getter et Setter pour user
     public User getUser() {
         return user;
     }
@@ -57,7 +55,6 @@ public class Message {
         this.user = user;
     }
 
-    // Getter et Setter pour message
     public String getMessage() {
         return message;
     }
@@ -66,7 +63,6 @@ public class Message {
         this.message = message;
     }
 
-    // Getter et Setter pour createdAt
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -75,7 +71,6 @@ public class Message {
         this.createdAt = createdAt;
     }
 
-    // Getter et Setter pour updatedAt
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }

@@ -40,7 +40,6 @@ public class Rental {
     @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
-    // Getters et Setters
     public Integer getId() {
         return id;
     }
