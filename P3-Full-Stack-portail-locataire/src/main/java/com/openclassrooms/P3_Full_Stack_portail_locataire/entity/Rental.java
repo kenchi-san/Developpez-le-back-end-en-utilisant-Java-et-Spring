@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "RENTALS")
@@ -27,6 +28,7 @@ public class Rental {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
+    @JsonIgnore
     private User owner;
 
     @Column(name = "created_at", updatable = false)
@@ -38,7 +40,16 @@ public class Rental {
     @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
-    // Getters, setters, constructeurs
+//   TODO a supprimer plus tard
+    @PrePersist
+    public void setDefaultOwner() {
+        if (this.owner == null) {
+            this.owner = new User();
+            this.owner.setId(1);
+        }
+    }
+
+
     public Integer getId() {
         return id;
     }
