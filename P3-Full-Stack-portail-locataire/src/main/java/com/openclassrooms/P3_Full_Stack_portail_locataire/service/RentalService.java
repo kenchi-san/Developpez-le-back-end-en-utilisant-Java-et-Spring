@@ -1,4 +1,4 @@
-package com.openclassrooms.P3_Full_Stack_portail_locataire.services;
+package com.openclassrooms.P3_Full_Stack_portail_locataire.service;
 
 import org.springframework.stereotype.Service;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.repository.RentalRepository;

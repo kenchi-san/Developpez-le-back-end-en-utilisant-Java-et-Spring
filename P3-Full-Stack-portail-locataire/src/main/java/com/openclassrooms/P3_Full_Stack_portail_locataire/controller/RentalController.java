@@ -2,7 +2,7 @@ package com.openclassrooms.P3_Full_Stack_portail_locataire.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.openclassrooms.P3_Full_Stack_portail_locataire.services.RentalService;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.service.RentalService;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Rental;
 
 import jakarta.validation.Valid;
