@@ -36,8 +36,8 @@ public class SecurityConfiguration {
 
                 // Définir les autorisations d'accès
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/rental/**").permitAll()// Autoriser les endpoints sous "/auth/**" sans authentification
+                        .requestMatchers("/auth/login").permitAll()
+                        // Autoriser les endpoints sous "/auth/**" sans authentification
                         .anyRequest().authenticated()           // Toutes les autres requêtes nécessitent une authentification
                 )
 

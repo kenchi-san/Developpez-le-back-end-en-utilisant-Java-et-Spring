@@ -32,10 +32,9 @@ public class AuthenticationService {
         if (userRepository.findByEmail(input.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already in use: " + input.getEmail());
         }
-
         // Création d'un nouvel utilisateur
         User user = new User();
-        user.setName(input.getFullName());
+        user.setName(input.getName());
         user.setEmail(input.getEmail());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
 
@@ -43,15 +42,15 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
-    public User authenticate(LoginUserDto input) {
+        public User authenticate(LoginUserDto input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         input.getEmail(),
                         input.getPassword()
                 )
         );
-
         return userRepository.findByEmail(input.getEmail())
                 .orElseThrow();
     }
+
 }
