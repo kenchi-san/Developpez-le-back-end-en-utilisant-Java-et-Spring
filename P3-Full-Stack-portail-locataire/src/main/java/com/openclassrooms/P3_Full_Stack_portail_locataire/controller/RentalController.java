@@ -1,5 +1,6 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.controller;
 
+import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.RentalDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.service.RentalService;
@@ -18,19 +19,19 @@ public class RentalController {
         this.rentalService = rentalService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Rental>> getAllRentals() {
-        List<Rental> rentals = rentalService.getAllRentals();
+    @GetMapping("/list")
+    public ResponseEntity<List<RentalDto>> getAllRentals() {
+        List<RentalDto> rentals = rentalService.getAllRentals();
         return ResponseEntity.ok(rentals);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<Rental> createRental(@Valid @RequestBody Rental rental) {
         Rental savedRental = rentalService.saveRental(rental);
         return ResponseEntity.ok(savedRental);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/edit/{id}")
     public ResponseEntity<Rental> updateRental(@PathVariable Long id, @Valid @RequestBody Rental rentalDetails) {
 //        System.out.println("ID: " + id + ", Rental Details: " + rentalDetails);
 
@@ -62,7 +63,7 @@ public class RentalController {
                 .orElse(ResponseEntity.notFound().build()); // 404 si l'entité n'existe pas
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("detail/{id}")
     public ResponseEntity<Rental> getRentalById(@PathVariable Long id) {
         return rentalService.getRentalById(id)
                 .map(ResponseEntity::ok) // Retourne 200 OK si trouvé
@@ -74,3 +75,4 @@ public class RentalController {
         return ResponseEntity.ok("Test OK!");
     }
 }
+

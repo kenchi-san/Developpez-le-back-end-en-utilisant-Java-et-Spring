@@ -1,5 +1,6 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.configs;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -36,7 +37,7 @@ public class SecurityConfiguration {
 
                 // Définir les autorisations d'accès
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("auth/login","rental/list","/api/rental/detail/**").permitAll()
                         // Autoriser les endpoints sous "/auth/**" sans authentification
                         .anyRequest().authenticated()           // Toutes les autres requêtes nécessitent une authentification
                 )
@@ -50,7 +51,23 @@ public class SecurityConfiguration {
                 .authenticationProvider(authenticationProvider)
 
                 // Ajouter le filtre JWT avant UsernamePasswordAuthenticationFilter
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(logout -> logout
+                        .logoutUrl("/auth/logout")               // URL à appeler pour se déconnecter
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            // Configurer la réponse HTTP
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+                            response.setStatus(HttpServletResponse.SC_OK);
+
+                            // Écrire un message JSON dans le corps de la réponse
+                            response.getWriter().write("{\"message\": \"Vous êtes bien déconnecté.\"}");
+                            response.getWriter().flush();
+                        })
+                        .invalidateHttpSession(true)            // Invalider la session
+                        .clearAuthentication(true)             // Effacer l'authentification actuelle
+                        .deleteCookies("JSESSIONID")           // Supprimer les cookies de session, si nécessaires
+                );
         return http.build();
     }
 

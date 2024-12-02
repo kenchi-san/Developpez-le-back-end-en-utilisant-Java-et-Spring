@@ -12,7 +12,7 @@ public class Rental {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -41,20 +41,20 @@ public class Rental {
     private List<Message> messages;
 
 //   TODO a supprimer plus tard
-    @PrePersist
-    public void setDefaultOwner() {
-        if (this.owner == null) {
-            this.owner = new User();
-            this.owner.setId(1);
-        }
-    }
+//    @PrePersist
+//    public void setDefaultOwner() {
+//        if (this.owner == null) {
+//            this.owner = new User();
+//            this.owner.setId(1);
+//        }
+//    }
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
