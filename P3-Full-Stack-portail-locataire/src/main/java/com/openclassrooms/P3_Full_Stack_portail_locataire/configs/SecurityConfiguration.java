@@ -30,26 +30,33 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable()) // Désactive la protection CSRF (à configurer selon vos besoins)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configurer CORS
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/register", "/rental/list", "/rental/detail/**").permitAll()
+                        // Routes publiques
+                        .requestMatchers(
+                                "/auth/login",
+                                "/auth/register",
+                                "/rental/list",
+                                "/rental/detail/**"
+                        ).permitAll()
+                        // Toutes les autres routes nécessitent une authentification
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Pas de sessions
+                .authenticationProvider(authenticationProvider) // Configurer le fournisseur d'authentification
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Ajouter le filtre JWT
                 .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
+                        .logoutUrl("/auth/logout") // URL de déconnexion
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setContentType("application/json");
                             response.setCharacterEncoding("UTF-8");
                             response.setStatus(HttpServletResponse.SC_OK);
                             response.getWriter().write("{\"message\": \"Vous êtes bien déconnecté.\"}");
                         })
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true) // Invalider la session
+                        .clearAuthentication(true) // Effacer les informations d'authentification
+                        .deleteCookies("JSESSIONID") // Supprimer le cookie de session
                 );
         return http.build();
     }
