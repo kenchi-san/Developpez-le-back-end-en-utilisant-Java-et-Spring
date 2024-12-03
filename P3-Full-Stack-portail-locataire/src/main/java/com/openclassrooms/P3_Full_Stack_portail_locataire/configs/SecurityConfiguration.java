@@ -33,7 +33,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/register", "/rental/list", "/api/rental/detail/**").permitAll()
+                        .requestMatchers("/auth/login", "/auth/register", "/rental/list", "/rental/detail/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

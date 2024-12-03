@@ -2,6 +2,7 @@ package com.openclassrooms.P3_Full_Stack_portail_locataire.controller;
 
 import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.AddRentalDto;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.AllInfoRentalDto;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.DetailRentalDto;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.EditRentalDto;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.User;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.service.UserService;
@@ -35,7 +36,7 @@ public class RentalController {
         List<AllInfoRentalDto> rentals = rentalService.getAllRentals();
         return ResponseEntity.ok(rentals);
     }
-
+//TODO ok
     @PostMapping("/add")
     public ResponseEntity<Rental> createRental(@Valid @RequestBody AddRentalDto rentalDto) {
         // Récupérer l'email de l'utilisateur connecté depuis le SecurityContext
@@ -101,9 +102,9 @@ public class RentalController {
     }
 
     @GetMapping("detail/{id}")
-    public ResponseEntity<Rental> getRentalById(@PathVariable Long id) {
-        return rentalService.getRentalById(id)
-                .map(ResponseEntity::ok) // Retourne 200 OK si trouvé
+    public ResponseEntity<DetailRentalDto> getRentalById(@PathVariable Long id) {
+        return rentalService.getDetailRentalById(id)
+                .map(ResponseEntity::ok) // Retourne 200 OK avec le DTO
                 .orElse(ResponseEntity.notFound().build()); // Retourne 404 si non trouvé
     }
 

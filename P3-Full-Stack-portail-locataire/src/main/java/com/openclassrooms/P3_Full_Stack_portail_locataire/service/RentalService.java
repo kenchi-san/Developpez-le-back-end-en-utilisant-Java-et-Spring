@@ -1,5 +1,6 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.service;
 
+import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.DetailRentalDto;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.MessageDto;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.AllInfoRentalDto;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Message;
@@ -31,7 +32,27 @@ public class RentalService {
     public Optional<Rental> getRentalById(Long id) {
         return rentalRepository.findById(id);
     }
+    public Optional<DetailRentalDto> getDetailRentalById(Long id) {
+        // Récupérer le Rental par son id
+        return rentalRepository.findById(id)
+                .map(rental -> {
+                    // Récupérer les messages associés au Rental
+                    List<Message> messages = messageRepository.findByRentalId(rental.getId());
 
+                    // Convertir les messages en MessageDto
+                    List<MessageDto> messageDtos = toMessageDTOList(messages);
+
+                    // Créer un DetailRentalDto
+                    return new DetailRentalDto(
+                            rental.getId(),
+                            rental.getName(),
+                            rental.getSurface(),
+                            rental.getPrice(),
+                            rental.getPicture(),
+                            messageDtos
+                    );
+                });
+    }
     public List<AllInfoRentalDto> getAllRentals() {
         // Récupérer toutes les locations
         List<Rental> rentals = rentalRepository.findAll();
