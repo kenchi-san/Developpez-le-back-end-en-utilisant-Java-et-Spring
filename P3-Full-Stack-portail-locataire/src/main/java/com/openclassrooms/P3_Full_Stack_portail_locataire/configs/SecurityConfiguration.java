@@ -18,55 +18,38 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-    private final AuthenticationProvider authenticationProvider;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfiguration(
-            JwtAuthenticationFilter jwtAuthenticationFilter,
-            AuthenticationProvider authenticationProvider
-    ) {
-        this.authenticationProvider = authenticationProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthenticationProvider authenticationProvider;
+
+    public SecurityConfiguration(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.authenticationProvider = authenticationProvider;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Désactiver CSRF (inutile pour une API REST avec JWT)
                 .csrf(csrf -> csrf.disable())
-
-                // Définir les autorisations d'accès
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("auth/login","rental/list","/api/rental/detail/**").permitAll()
-                        // Autoriser les endpoints sous "/auth/**" sans authentification
-                        .anyRequest().authenticated()           // Toutes les autres requêtes nécessitent une authentification
+                        .requestMatchers("/auth/login", "/auth/register", "/rental/list", "/api/rental/detail/**").permitAll()
+                        .anyRequest().authenticated()
                 )
-
-                // Gestion des sessions : API sans état (stateless)
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-
-                // Ajouter le AuthenticationProvider configuré
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-
-                // Ajouter le filtre JWT avant UsernamePasswordAuthenticationFilter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout
-                        .logoutUrl("/auth/logout")               // URL à appeler pour se déconnecter
+                        .logoutUrl("/auth/logout")
                         .logoutSuccessHandler((request, response, authentication) -> {
-                            // Configurer la réponse HTTP
                             response.setContentType("application/json");
                             response.setCharacterEncoding("UTF-8");
                             response.setStatus(HttpServletResponse.SC_OK);
-
-                            // Écrire un message JSON dans le corps de la réponse
                             response.getWriter().write("{\"message\": \"Vous êtes bien déconnecté.\"}");
-                            response.getWriter().flush();
                         })
-                        .invalidateHttpSession(true)            // Invalider la session
-                        .clearAuthentication(true)             // Effacer l'authentification actuelle
-                        .deleteCookies("JSESSIONID")           // Supprimer les cookies de session, si nécessaires
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
                 );
         return http.build();
     }
@@ -74,15 +57,11 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-
         configuration.setAllowedOrigins(List.of("http://localhost:8090"));
-        configuration.setAllowedMethods(List.of("GET","POST"));
-        configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
-
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        source.registerCorsConfiguration("/**",configuration);
-
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }

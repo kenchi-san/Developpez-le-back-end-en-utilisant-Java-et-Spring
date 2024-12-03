@@ -2,11 +2,11 @@ package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
 public class RegisterUserDto {
     private String email;
-
     private String password;
-
     private String name;
 
+
+    // Getters et setters
     public String getEmail() {
         return email;
     }
@@ -23,16 +23,12 @@ public class RegisterUserDto {
         this.password = password;
     }
 
+
     public String getName() {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return "RegisterUserDto{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+    public void setName(String name) {
+        this.name = name;
     }
 }
