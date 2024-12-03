@@ -1,7 +1,7 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.service;
 
 import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.MessageDto;
-import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.RentalDto;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.AllInfoRentalDto;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Message;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.repository.MessageRepository;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class RentalService {
         return rentalRepository.findById(id);
     }
 
-    public List<RentalDto> getAllRentals() {
+    public List<AllInfoRentalDto> getAllRentals() {
         // Récupérer toutes les locations
         List<Rental> rentals = rentalRepository.findAll();
 
@@ -45,7 +45,7 @@ public class RentalService {
             List<MessageDto> messageDtos = toMessageDTOList(messages);
 
             // Retourner un DTO de Rental avec la liste des MessageDto et les nouveaux champs
-            return new RentalDto(
+            return new AllInfoRentalDto(
                     rental.getId(),
                     rental.getName(),
                     rental.getSurface(),   // Ajout de la surface

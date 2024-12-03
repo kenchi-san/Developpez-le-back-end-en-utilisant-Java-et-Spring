@@ -3,7 +3,7 @@ package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class RentalDto {
+public class AllInfoRentalDto {
 
     private Long id;
     private String name;
@@ -11,8 +11,8 @@ public class RentalDto {
     private BigDecimal price;    // prix
     private String picture;    // image
     private List<MessageDto> messages;
-    // Constructeur
-    public RentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String picture, List<MessageDto> messages) {
+
+    public AllInfoRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String picture, List<MessageDto> messages) {
         this.id = id;
         this.name = name;
         this.surface = surface;
