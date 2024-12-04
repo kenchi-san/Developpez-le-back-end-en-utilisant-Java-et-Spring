@@ -4,6 +4,8 @@ import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Message;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MessageService {
 
@@ -15,5 +17,13 @@ public class MessageService {
 
     public Message save(Message message) {
         return messageRepository.save(message);
+    }
+
+    public Optional<Message> findById(Long id) {
+        return messageRepository.findById(id);
+    }
+
+    public void delete(Message message) {
+        messageRepository.delete(message);
     }
 }
