@@ -1,16 +1,19 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.entity;
-
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "USERS", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -33,6 +36,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
+    // Automatically set timestamps before persisting or updating
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -42,12 +46,13 @@ public class User {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-    // Getters et setters
-    public Integer getId() {
+
+    // Getters and setters
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -105,5 +110,43 @@ public class User {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    // UserDetails interface implementation
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // No specific authorities for this implementation
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        // Using email as the username
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // All accounts are considered non-expired by default
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // All accounts are considered non-locked by default
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // All credentials are considered non-expired by default
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        // All accounts are enabled by default
+        return true;
     }
 }
