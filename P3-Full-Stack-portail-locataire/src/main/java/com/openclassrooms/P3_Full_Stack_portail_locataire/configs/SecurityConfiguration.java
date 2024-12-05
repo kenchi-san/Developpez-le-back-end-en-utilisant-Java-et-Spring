@@ -38,7 +38,10 @@ public class SecurityConfiguration {
                                 "/auth/login",
                                 "/auth/register",
                                 "/rental/list",
-                                "/rental/detail/**"
+                                "/rental/detail/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/rental/test"
                         ).permitAll()
                         // Toutes les autres routes nécessitent une authentification
                         .anyRequest().authenticated()

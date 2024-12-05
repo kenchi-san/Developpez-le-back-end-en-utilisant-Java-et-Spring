@@ -1,17 +1,33 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 import java.util.List;
 
-public class EditRentalDto {
-    private Long id;
-    private String name;
-    private BigDecimal surface;  // surface
-    private BigDecimal price;    // prix
-    private String Description;
-    private String picture;    // image
-    private List<MessageDto> messages;
+    @Schema(description = "DTO utilisé pour modifier les informations d'une location.")
+    public class EditRentalDto {
 
+        @Schema(description = "Identifiant unique de la location.", example = "1")
+        private Long id;
+
+        @Schema(description = "Nom de la location.", example = "Appartement T3 rénové")
+        private String name;
+
+        @Schema(description = "Surface de la location en mètres carrés.", example = "85.5")
+        private BigDecimal surface;
+
+        @Schema(description = "Prix de la location en euros.", example = "1300.00")
+        private BigDecimal price;
+
+        @Schema(description = "Description détaillée de la location.", example = "Appartement rénové avec balcon et cuisine moderne")
+        private String Description;
+
+        @Schema(description = "URL de l'image associée à la location.", example = "https://example.com/images/rental-updated.jpg")
+        private String picture;
+
+        @Schema(description = "Liste des messages associés (facultatif).")
+        private List<MessageDto> messages;
     public EditRentalDto(Long id, String name, BigDecimal surface, BigDecimal price,String Description, String picture,List<MessageDto> messages) {
         this.id = id;
         this.name = name;
