@@ -5,6 +5,7 @@ import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.AllInfoRentalDto;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.DetailRentalDto;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.EditRentalDto;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.User;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.service.ImageService;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,21 +21,26 @@ import com.openclassrooms.P3_Full_Stack_portail_locataire.service.RentalService;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Rental;
 
 import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/rental")
+@RequestMapping("/rentals")
 public class RentalController {
 
     private final RentalService rentalService;
     private final UserService userService;
+    private final ImageService imageService;
 
-    public RentalController(RentalService rentalService, UserService userService) {
+    public RentalController(RentalService rentalService, UserService userService, ImageService imageService) {
         this.rentalService = rentalService;
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     @Operation(
@@ -46,10 +52,17 @@ public class RentalController {
                     content = @Content(schema = @Schema(implementation = AllInfoRentalDto.class))),
             @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
     })
-    @GetMapping("/list")
-    public ResponseEntity<List<AllInfoRentalDto>> getAllRentals() {
+    @GetMapping()
+    public ResponseEntity<Map<String, List<AllInfoRentalDto>>> getAllRentals() {
+        // Récupérer toutes les locations depuis le service
         List<AllInfoRentalDto> rentals = rentalService.getAllRentals();
-        return ResponseEntity.ok(rentals);
+
+        // Créer une map avec la clé "rentals" et la liste des locations
+        Map<String, List<AllInfoRentalDto>> response = new HashMap<>();
+        response.put("rentals", rentals);
+
+        // Retourner la réponse sous la forme d'un objet JSON
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Ajouter une nouvelle location", description = "Permet d'ajouter une nouvelle location en fournissant les détails nécessaires")
@@ -58,7 +71,7 @@ public class RentalController {
             @ApiResponse(responseCode = "400", description = "Erreur de validation dans les données fournies"),
             @ApiResponse(responseCode = "403", description = "Vous devez être connecté")
     })
-    @PostMapping("/add")
+    @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<Rental> createRental(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Les données de la location à ajouter",
@@ -79,35 +92,33 @@ public class RentalController {
                             )
                     )
             )
-            @Valid @RequestBody AddRentalDto rentalDto
-    )
-    {
-        // Récupérer l'email de l'utilisateur connecté depuis le SecurityContext
+            @Valid @ModelAttribute AddRentalDto rentalDto // Notez @ModelAttribute
+    ) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        // Trouver l'utilisateur connecté par email
         User owner = userService.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur connecté introuvable avec l'email : " + email));
 
-        // Créer une nouvelle entité Rental à partir du DTO
+
+        MultipartFile picture = rentalDto.getPicture();
+
+        // Traiter et enregistrer l'image
+        String imageUrl = imageService.savePicture(picture);
+
         Rental newRental = new Rental();
         newRental.setName(rentalDto.getName());
         newRental.setDescription(rentalDto.getDescription());
-        newRental.setPicture(rentalDto.getPicture());
+        newRental.setPicture(imageUrl);
         newRental.setPrice(rentalDto.getPrice());
         newRental.setSurface(rentalDto.getSurface());
-        newRental.setOwner(owner); // Associer l'utilisateur connecté comme propriétaire
+        newRental.setOwner(owner);
 
-        // Sauvegarder la location dans la base de données
         Rental savedRental = rentalService.saveRental(newRental);
 
-        // Générer l'URL de la ressource créée et l'ajouter dans l'en-tête Location
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedRental.getId())
                 .toUri();
 
-        // Retourner une réponse avec le statut 201 Created
         return ResponseEntity.created(location).body(savedRental);
     }
 
@@ -124,14 +135,14 @@ public class RentalController {
                             examples = @ExampleObject(
                                     name = "Exemple de réponse réussie",
                                     value = """
-                {
-                  "name": "Appartement T3 rénové",
-                  "surface": 85.5,
-                  "price": 1300.00,
-                  "description": "Appartement rénové avec balcon",
-                  "picture": "https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg"
-                }
-                """
+                                            {
+                                              "name": "Appartement T3 rénové",
+                                              "surface": 85.5,
+                                              "price": 1300.00,
+                                              "description": "Appartement rénové avec balcon",
+                                              "picture": "https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg"
+                                            }
+                                            """
                             )
                     )
             ),
@@ -146,7 +157,7 @@ public class RentalController {
                     content = @Content
             )
     })
-    @PutMapping("/edit/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Rental> updateRental(
             @Parameter(
                     description = "Identifiant de la location à modifier",
@@ -161,14 +172,14 @@ public class RentalController {
                             examples = @ExampleObject(
                                     name = "Exemple de données de requête",
                                     value = """
-                {
-                  "name": "Appartement T3 rénové",
-                  "surface": 85.5,
-                  "price": 1300.00,
-                  "description": "Appartement rénové avec balcon et cuisine moderne",
-                  "picture": "https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg"
-                }
-                """
+                                            {
+                                              "name": "Appartement T3 rénové",
+                                              "surface": 85.5,
+                                              "price": 1300.00,
+                                              "description": "Appartement rénové avec balcon et cuisine moderne",
+                                              "picture": "https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg"
+                                            }
+                                            """
                             )
                     )
             ) @Valid @RequestBody EditRentalDto rentalDetails
@@ -187,7 +198,9 @@ public class RentalController {
                         existingRental.setPrice(rentalDetails.getPrice());
                     }
                     if (rentalDetails.getPicture() != null) {
-                        existingRental.setPicture(rentalDetails.getPicture());
+                        // Utiliser ImageService pour sauvegarder l'image et obtenir l'URL
+                        String imageUrl = imageService.savePicture(rentalDetails.getPicture());
+                        existingRental.setPicture(imageUrl); // Mettre à jour l'URL de l'image
                     }
                     if (rentalDetails.getDescription() != null) {
                         existingRental.setDescription(rentalDetails.getDescription());
@@ -203,7 +216,7 @@ public class RentalController {
                 .orElse(ResponseEntity.notFound().build()); // 404 si l'entité n'existe pas
     }
 
-    @GetMapping("detail/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<DetailRentalDto> getRentalById(@PathVariable Long id) {
         return rentalService.getDetailRentalById(id)
                 .map(ResponseEntity::ok) // Retourne 200 OK avec le DTO

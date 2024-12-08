@@ -30,36 +30,33 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Désactive la protection CSRF (à configurer selon vos besoins)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configurer CORS
+                .csrf(csrf -> csrf.disable()) // Désactive la protection CSRF
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configure CORS
                 .authorizeHttpRequests(auth -> auth
                         // Routes publiques
                         .requestMatchers(
                                 "/auth/login",
                                 "/auth/register",
-                                "/rental/list",
-                                "/rental/detail/**",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/rental/test"
+                                "/v3/api-docs/**"
                         ).permitAll()
                         // Toutes les autres routes nécessitent une authentification
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Pas de sessions
-                .authenticationProvider(authenticationProvider) // Configurer le fournisseur d'authentification
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Mode stateless
+                .authenticationProvider(authenticationProvider) // Fournisseur d'authentification
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Ajouter le filtre JWT
                 .logout(logout -> logout
-                        .logoutUrl("/auth/logout") // URL de déconnexion
+                        .logoutUrl("/auth/logout")
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setContentType("application/json");
                             response.setCharacterEncoding("UTF-8");
                             response.setStatus(HttpServletResponse.SC_OK);
                             response.getWriter().write("{\"message\": \"Vous êtes bien déconnecté.\"}");
                         })
-                        .invalidateHttpSession(true) // Invalider la session
-                        .clearAuthentication(true) // Effacer les informations d'authentification
-                        .deleteCookies("JSESSIONID") // Supprimer le cookie de session
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
                 );
         return http.build();
     }
@@ -67,9 +64,10 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8090"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Frontend Angular
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true); // Si nécessaire
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -33,14 +34,14 @@ public class AddRentalDto {
     @Schema(description = "Description de la location", example = "Bel appartement en centre-ville avec balcon et parking")
     private String description;
 
-    @Schema(description = "URL de l'image de la location", example = "https://example.com/images/rental.jpg")
-    private String picture;
+    @Schema(description = "Upload l'image de la location", example = "rental.jpg")
+    private MultipartFile picture;
 
     @Schema(description = "Propriétaire de la location, identifié par son email")
     private User owner;
 //    private List<MessageDto> messages;
 
-    public AddRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String Description, String picture, User owner) {
+    public AddRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String Description, MultipartFile  picture, User owner) {
         this.id = id;
         this.name = name;
         this.surface = surface;
@@ -84,11 +85,11 @@ public class AddRentalDto {
         this.price = price;
     }
 
-    public String getPicture() {
+    public MultipartFile getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(MultipartFile picture) {
         this.picture = picture;
     }
 
