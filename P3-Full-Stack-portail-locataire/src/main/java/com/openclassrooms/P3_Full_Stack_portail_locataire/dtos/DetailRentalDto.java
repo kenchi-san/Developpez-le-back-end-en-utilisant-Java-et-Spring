@@ -1,5 +1,7 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.math.BigDecimal;
 import java.util.List;
 
