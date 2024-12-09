@@ -1,6 +1,8 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Message;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Rental;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.User;
 
 import java.time.LocalDateTime;
 

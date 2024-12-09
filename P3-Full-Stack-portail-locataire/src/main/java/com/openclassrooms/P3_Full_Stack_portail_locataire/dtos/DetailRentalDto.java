@@ -1,8 +1,10 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class DetailRentalDto {
@@ -10,16 +12,24 @@ public class DetailRentalDto {
     private String name;
     private BigDecimal surface;  // surface
     private BigDecimal price;    // prix
-    private String picture;    // image
+    private String picture; // image
+    private String description;
+    @JsonProperty("created_at")
+    private LocalDateTime createdAt;
+    @JsonProperty("updated_at")
+    private LocalDateTime updatedAt;
     private List<MessageDto> messages;
 
-    public DetailRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String picture, List<MessageDto> messages) {
+    public DetailRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String picture,LocalDateTime createdAt,LocalDateTime updatedAt,String description, List<MessageDto> messages) {
         this.id = id;
         this.name = name;
         this.surface = surface;
         this.price = price;
         this.picture = picture;
-        this.messages = messages;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.description = description;
+//        this.messages = messages;
     }
 
     // Getters et Setters
@@ -70,4 +80,42 @@ public class DetailRentalDto {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+//    @Override
+//    public String toString() {
+//        return "DetailRentalDto{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", description='" + description + '\'' +
+//                ", creation='" + createdAt + '\'' +
+//                ", modifier='" + updatedAt + '\'' +
+//                ", price=" + price +
+//                ", messages=" + messages +
+//                '}';
+//    }
+
 }

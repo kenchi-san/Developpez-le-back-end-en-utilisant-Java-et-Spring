@@ -113,7 +113,8 @@ public class AuthenticationController {
                 currentUser.getId(),
                 currentUser.getEmail(),
                 currentUser.getName(),
-                currentUser.getCreatedAt()
+                currentUser.getCreatedAt(),
+                currentUser.getUpdatedAt()
         );
 
         // Retournez le DTO

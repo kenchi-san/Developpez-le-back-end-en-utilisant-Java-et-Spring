@@ -1,11 +1,9 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.controller;
 
-import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.AddRentalDto;
-import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.AllInfoRentalDto;
-import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.DetailRentalDto;
-import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.EditRentalDto;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.*;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.User;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.service.ImageService;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.service.MessageService;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,6 +26,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rentals")
@@ -36,11 +36,13 @@ public class RentalController {
     private final RentalService rentalService;
     private final UserService userService;
     private final ImageService imageService;
+    private final MessageService messageService;
 
-    public RentalController(RentalService rentalService, UserService userService, ImageService imageService) {
+    public RentalController(RentalService rentalService, UserService userService, ImageService imageService, MessageService messageService) {
         this.rentalService = rentalService;
         this.userService = userService;
         this.imageService = imageService;
+        this.messageService = messageService;
     }
 
     @Operation(
@@ -157,35 +159,12 @@ public class RentalController {
                     content = @Content
             )
     })
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<Rental> updateRental(
-            @Parameter(
-                    description = "Identifiant de la location à modifier",
-                    example = "1"
-            ) @PathVariable Long id,
-
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Les détails mis à jour de la location",
-                    required = true,
-                    content = @Content(
-                            schema = @Schema(implementation = EditRentalDto.class),
-                            examples = @ExampleObject(
-                                    name = "Exemple de données de requête",
-                                    value = """
-                                            {
-                                              "name": "Appartement T3 rénové",
-                                              "surface": 85.5,
-                                              "price": 1300.00,
-                                              "description": "Appartement rénové avec balcon et cuisine moderne",
-                                              "picture": "https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg"
-                                            }
-                                            """
-                            )
-                    )
-            ) @Valid @RequestBody EditRentalDto rentalDetails
+            @Parameter(description = "Identifiant de la location à modifier", example = "1") @PathVariable Long id,
+            @RequestPart(value = "rentalDetails") @Valid EditRentalDto rentalDetails,
+            @RequestPart(value = "picture", required = false) MultipartFile picture
     ) {
-//        System.out.println("ID: " + id + ", Rental Details: " + rentalDetails);
-
         return rentalService.getRentalById(id)
                 .map(existingRental -> {
                     if (rentalDetails.getName() != null) {
@@ -197,19 +176,20 @@ public class RentalController {
                     if (rentalDetails.getPrice() != null) {
                         existingRental.setPrice(rentalDetails.getPrice());
                     }
-                    if (rentalDetails.getPicture() != null) {
+                    if (picture != null) {
                         // Utiliser ImageService pour sauvegarder l'image et obtenir l'URL
-                        String imageUrl = imageService.savePicture(rentalDetails.getPicture());
-                        existingRental.setPicture(imageUrl); // Mettre à jour l'URL de l'image
+                        String imageUrl = imageService.savePicture(picture);
+                        existingRental.setPicture(imageUrl);
                     }
                     if (rentalDetails.getDescription() != null) {
                         existingRental.setDescription(rentalDetails.getDescription());
                     }
-// Sauvegarder l'entité mise à jour dans la base de données
-                    Rental updatedRental = rentalService.saveRental(existingRental);
-// Exclure les messages de la réponse (en les mettant à null)
-                    updatedRental.setMessages(null);
 
+                    // Sauvegarder l'entité mise à jour dans la base de données
+                    Rental updatedRental = rentalService.saveRental(existingRental);
+
+                    // Exclure les messages de la réponse (en les mettant à null)
+                    updatedRental.setMessages(null);
 
                     return ResponseEntity.ok(updatedRental); // 200 OK avec l'objet mis à jour
                 })
@@ -218,14 +198,32 @@ public class RentalController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DetailRentalDto> getRentalById(@PathVariable Long id) {
-        return rentalService.getDetailRentalById(id)
-                .map(ResponseEntity::ok) // Retourne 200 OK avec le DTO
-                .orElse(ResponseEntity.notFound().build()); // Retourne 404 si non trouvé
-    }
+        Optional<Rental> rental = rentalService.getRentalById(id);
 
-    @GetMapping("/test")
-    public ResponseEntity<String> testEndpoint() {
-        return ResponseEntity.ok("Test OK!");
+        if (rental.isPresent()) {
+            Rental foundRental = rental.get();
+
+            // Conversion des messages en MessageDto
+            List<MessageDto> messageDtos = rentalService.toMessageDTOList(foundRental.getMessages());
+
+            // Création du DTO pour le Rental
+            DetailRentalDto rentalDto = new DetailRentalDto(
+                    foundRental.getId(),
+                    foundRental.getName(),
+                    foundRental.getSurface(),
+                    foundRental.getPrice(),
+                    foundRental.getPicture(),
+                    foundRental.getCreatedAt(),
+                    foundRental.getUpdatedAt(),
+                    foundRental.getDescription(),
+                    messageDtos
+            );
+        System.out.println("ID: " + id + ", Rental Details: " + rentalDto);
+
+            return ResponseEntity.ok(rentalDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 

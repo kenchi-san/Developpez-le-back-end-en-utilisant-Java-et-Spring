@@ -38,7 +38,7 @@ public class Rental {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "rental",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
 //   TODO a supprimer plus tard

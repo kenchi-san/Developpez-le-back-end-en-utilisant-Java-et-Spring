@@ -6,6 +6,7 @@ import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.AllInfoRentalDto;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Message;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.User;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.repository.MessageRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.repository.RentalRepository;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Rental;
@@ -36,7 +37,6 @@ private final ImageService imageService;
         return rentalRepository.findById(id);
     }
 
-
     public Optional<DetailRentalDto> getDetailRentalById(Long id) {
         // Récupérer le Rental par son id
         return rentalRepository.findById(id)
@@ -56,6 +56,9 @@ private final ImageService imageService;
                             rental.getSurface(),
                             rental.getPrice(),
                             imageUrl,
+                            rental.getCreatedAt(),
+                            rental.getUpdatedAt(),
+                            rental.getDescription(),
                             messageDtos
                     );
                 });
@@ -87,7 +90,7 @@ private final ImageService imageService;
         }).collect(Collectors.toList());
     }
 
-    private List<MessageDto> toMessageDTOList(List<Message> messages) {
+    public List<MessageDto> toMessageDTOList(List<Message> messages) {
         return messages.stream()
                 .map(this::toMessageDTO)  // Pour chaque Message, on utilise la méthode toMessageDTO pour le convertir
                 .collect(Collectors.toList());  // Collecte le résultat dans une liste

@@ -27,16 +27,13 @@ import java.util.List;
         @Schema(description = "Uploader l'image associée à la location.", example = "rental-updated.jpg")
         private MultipartFile picture;
 
-        @Schema(description = "Liste des messages associés (facultatif).")
-        private List<MessageDto> messages;
-    public EditRentalDto(Long id, String name, BigDecimal surface, BigDecimal price,String Description, MultipartFile picture,List<MessageDto> messages) {
+    public EditRentalDto(Long id, String name, BigDecimal surface, BigDecimal price,String Description, MultipartFile picture) {
         this.id = id;
         this.name = name;
         this.surface = surface;
         this.price = price;
         this.Description = Description;
         this.picture = picture;
-        this.messages = messages;
 
     }
 

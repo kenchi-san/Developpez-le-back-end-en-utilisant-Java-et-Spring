@@ -38,8 +38,10 @@ public class SecurityConfiguration {
                                 "/auth/login",
                                 "/auth/register",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                "user/**"
                         ).permitAll()
+                        .requestMatchers("/user/{id:[0-9]+}").permitAll()
                         // Toutes les autres routes nécessitent une authentification
                         .anyRequest().authenticated()
                 )
