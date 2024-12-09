@@ -1,4 +1,5 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

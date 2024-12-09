@@ -1,25 +1,39 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.math.BigDecimal;
 import java.util.List;
 
-public class EditRentalDto {
-    private Long id;
-    private String name;
-    private BigDecimal surface;  // surface
-    private BigDecimal price;    // prix
-    private String Description;
-    private String picture;    // image
-    private List<MessageDto> messages;
+    @Schema(description = "DTO utilisé pour modifier les informations d'une location.")
+    public class EditRentalDto {
 
-    public EditRentalDto(Long id, String name, BigDecimal surface, BigDecimal price,String Description, String picture,List<MessageDto> messages) {
+        @Schema(description = "Identifiant unique de la location.", example = "1")
+        private Long id;
+
+        @Schema(description = "Nom de la location.", example = "Appartement T3 rénové")
+        private String name;
+
+        @Schema(description = "Surface de la location en mètres carrés.", example = "85.5")
+        private BigDecimal surface;
+
+        @Schema(description = "Prix de la location en euros.", example = "1300.00")
+        private BigDecimal price;
+
+        @Schema(description = "Description détaillée de la location.", example = "Appartement rénové avec balcon et cuisine moderne")
+        private String Description;
+
+        @Schema(description = "Uploader l'image associée à la location.", example = "rental-updated.jpg")
+        private MultipartFile picture;
+
+    public EditRentalDto(Long id, String name, BigDecimal surface, BigDecimal price,String Description, MultipartFile picture) {
         this.id = id;
         this.name = name;
         this.surface = surface;
         this.price = price;
         this.Description = Description;
         this.picture = picture;
-        this.messages = messages;
 
     }
 
@@ -55,11 +69,11 @@ public class EditRentalDto {
         this.price = price;
     }
 
-    public String getPicture() {
+    public MultipartFile getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(MultipartFile picture) {
         this.picture = picture;
     }
 

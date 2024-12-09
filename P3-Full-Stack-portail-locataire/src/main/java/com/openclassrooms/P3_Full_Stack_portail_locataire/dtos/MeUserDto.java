@@ -7,13 +7,15 @@ public class MeUserDto {
     private String email;
     private String name;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     // Constructeur
-    public MeUserDto(Long id, String email, String name, LocalDateTime createdAt) {
+    public MeUserDto(Long id, String email, String name, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     // Getters et Setters
@@ -47,5 +49,13 @@ public class MeUserDto {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
