@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class RentalController {
     public ResponseEntity<Map<String, List<AllInfoRentalDto>>> getAllRentals() {
         // Récupérer toutes les locations depuis le service
         List<AllInfoRentalDto> rentals = rentalService.getAllRentals();
-
+//System.out.println(rentals);
         // Créer une map avec la clé "rentals" et la liste des locations
         Map<String, List<AllInfoRentalDto>> response = new HashMap<>();
         response.put("rentals", rentals);
@@ -113,7 +114,7 @@ public class RentalController {
         newRental.setPrice(rentalDto.getPrice());
         newRental.setSurface(rentalDto.getSurface());
         newRental.setOwner(owner);
-
+        newRental.setCreatedAt(LocalDateTime.now());
         Rental savedRental = rentalService.saveRental(newRental);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -159,11 +160,12 @@ public class RentalController {
                     content = @Content
             )
     })
-    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<Rental> updateRental(
-            @Parameter(description = "Identifiant de la location à modifier", example = "1") @PathVariable Long id,
-            @RequestPart(value = "rentalDetails") @Valid EditRentalDto rentalDetails,
-            @RequestPart(value = "picture", required = false) MultipartFile picture
+            @Parameter(description = "Identifiant de la location à modifier", example = "1")
+            @PathVariable Long id,
+//            @RequestPart(value = "rentalDetails")
+            @Valid EditRentalDto rentalDetails
     ) {
         return rentalService.getRentalById(id)
                 .map(existingRental -> {
@@ -176,21 +178,13 @@ public class RentalController {
                     if (rentalDetails.getPrice() != null) {
                         existingRental.setPrice(rentalDetails.getPrice());
                     }
-                    if (picture != null) {
-                        // Utiliser ImageService pour sauvegarder l'image et obtenir l'URL
-                        String imageUrl = imageService.savePicture(picture);
-                        existingRental.setPicture(imageUrl);
-                    }
                     if (rentalDetails.getDescription() != null) {
                         existingRental.setDescription(rentalDetails.getDescription());
                     }
+                    existingRental.setUpdatedAt(LocalDateTime.now());
 
                     // Sauvegarder l'entité mise à jour dans la base de données
                     Rental updatedRental = rentalService.saveRental(existingRental);
-
-                    // Exclure les messages de la réponse (en les mettant à null)
-                    updatedRental.setMessages(null);
-
                     return ResponseEntity.ok(updatedRental); // 200 OK avec l'objet mis à jour
                 })
                 .orElse(ResponseEntity.notFound().build()); // 404 si l'entité n'existe pas
@@ -203,8 +197,6 @@ public class RentalController {
         if (rental.isPresent()) {
             Rental foundRental = rental.get();
 
-            // Conversion des messages en MessageDto
-            List<MessageDto> messageDtos = rentalService.toMessageDTOList(foundRental.getMessages());
 
             // Création du DTO pour le Rental
             DetailRentalDto rentalDto = new DetailRentalDto(
@@ -216,9 +208,9 @@ public class RentalController {
                     foundRental.getCreatedAt(),
                     foundRental.getUpdatedAt(),
                     foundRental.getDescription(),
-                    messageDtos
+                    foundRental.getOwner()
             );
-        System.out.println("ID: " + id + ", Rental Details: " + rentalDto);
+            System.out.println("ID: " + id + ", Rental Details: " + rentalDto);
 
             return ResponseEntity.ok(rentalDto);
         } else {

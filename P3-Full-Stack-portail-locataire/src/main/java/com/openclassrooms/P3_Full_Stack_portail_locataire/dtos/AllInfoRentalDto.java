@@ -31,12 +31,12 @@ public class AllInfoRentalDto {
     @Schema(description = "voici un superbe apprement")
     private String description;
     @JsonProperty("owner_id")
-    private Long owner;
+    private User owner;
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
-    public AllInfoRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String picture, String description,Long owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AllInfoRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String picture, String description,User owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.surface = surface;
@@ -97,11 +97,12 @@ public class AllInfoRentalDto {
         this.description = description;
     }
 
-    public Long getOwner() {
-        return owner;
+    @JsonProperty("owner_id")
+    public Long getOwnerId() {
+        return owner != null ? owner.getId() : null;
     }
 
-    public void setOwner(Long owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 
@@ -119,5 +120,18 @@ public class AllInfoRentalDto {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "AllInfoRentalDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", creation='" + createdAt + '\'' +
+                ", modifier='" + updatedAt + '\'' +
+                ", price=" + price +
+                ", propriétaire=" + owner +
+                '}';
     }
 }

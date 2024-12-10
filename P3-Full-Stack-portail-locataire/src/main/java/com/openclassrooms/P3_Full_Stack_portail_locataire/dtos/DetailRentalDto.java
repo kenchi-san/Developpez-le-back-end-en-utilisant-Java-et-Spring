@@ -1,6 +1,7 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -18,9 +19,8 @@ public class DetailRentalDto {
     private LocalDateTime createdAt;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
-    private List<MessageDto> messages;
-
-    public DetailRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String picture,LocalDateTime createdAt,LocalDateTime updatedAt,String description, List<MessageDto> messages) {
+    private User owner;
+    public DetailRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String picture,LocalDateTime createdAt,LocalDateTime updatedAt,String description,User owner) {
         this.id = id;
         this.name = name;
         this.surface = surface;
@@ -29,7 +29,7 @@ public class DetailRentalDto {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.description = description;
-//        this.messages = messages;
+        this.owner = owner;
     }
 
     // Getters et Setters
@@ -47,14 +47,6 @@ public class DetailRentalDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<MessageDto> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<MessageDto> messages) {
-        this.messages = messages;
     }
 
     public BigDecimal getSurface() {
@@ -105,17 +97,26 @@ public class DetailRentalDto {
         this.description = description;
     }
 
-//    @Override
-//    public String toString() {
-//        return "DetailRentalDto{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", description='" + description + '\'' +
-//                ", creation='" + createdAt + '\'' +
-//                ", modifier='" + updatedAt + '\'' +
-//                ", price=" + price +
-//                ", messages=" + messages +
-//                '}';
-//    }
+    @JsonProperty("owner_id")
+    public Long getOwnerId() {
+        return owner != null ? owner.getId() : null;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    @Override
+    public String toString() {
+        return "DetailRentalDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", creation='" + createdAt + '\'' +
+                ", modifier='" + updatedAt + '\'' +
+                ", price=" + price +
+                ", propriétaire=" + owner.getId() +
+                '}';
+    }
 
 }

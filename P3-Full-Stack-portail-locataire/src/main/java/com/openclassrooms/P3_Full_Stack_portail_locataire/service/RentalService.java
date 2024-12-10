@@ -41,12 +41,6 @@ private final ImageService imageService;
         // Récupérer le Rental par son id
         return rentalRepository.findById(id)
                 .map(rental -> {
-                    // Récupérer les messages associés au Rental
-                    List<Message> messages = messageRepository.findByRentalId(rental.getId());
-
-                    // Convertir les messages en MessageDto
-                    List<MessageDto> messageDtos = toMessageDTOList(messages);
-
                     String imageUrl = rental.getPicture() != null ? imageService.getImageUrl(rental.getPicture()) : null;
 
                     // Créer un DetailRentalDto
@@ -59,7 +53,8 @@ private final ImageService imageService;
                             rental.getCreatedAt(),
                             rental.getUpdatedAt(),
                             rental.getDescription(),
-                            messageDtos
+                            rental.getOwner()
+
                     );
                 });
     }
@@ -71,7 +66,7 @@ private final ImageService imageService;
         return rentals.stream().map(rental -> {
             // Récupérer les messages associés à ce rental
 //            List<Message> messages = messageRepository.findByRentalId(rental.getId());
-            Long owner_id = rental.getOwner() != null ? rental.getOwner().getId() : null;
+            User owner_id = rental.getOwner();
             // Convertir les messages en MessageDto
 //            List<MessageDto> messageDtos = toMessageDTOList(messages);
 

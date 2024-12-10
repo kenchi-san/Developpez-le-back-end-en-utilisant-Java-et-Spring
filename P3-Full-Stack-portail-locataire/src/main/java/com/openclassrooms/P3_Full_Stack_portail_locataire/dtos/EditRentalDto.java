@@ -1,48 +1,32 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-    @Schema(description = "DTO utilisé pour modifier les informations d'une location.")
-    public class EditRentalDto {
+@Schema(description = "DTO utilisé pour modifier les informations d'une location.")
+public class EditRentalDto {
 
-        @Schema(description = "Identifiant unique de la location.", example = "1")
-        private Long id;
+    @Schema(description = "Nom de la location.", example = "Appartement T3 rénové")
+    private String name;
 
-        @Schema(description = "Nom de la location.", example = "Appartement T3 rénové")
-        private String name;
+    @Schema(description = "Surface de la location en mètres carrés.", example = "85.5")
+    private BigDecimal surface;
 
-        @Schema(description = "Surface de la location en mètres carrés.", example = "85.5")
-        private BigDecimal surface;
+    @Schema(description = "Prix de la location en euros.", example = "1300.00")
+    private BigDecimal price;
 
-        @Schema(description = "Prix de la location en euros.", example = "1300.00")
-        private BigDecimal price;
+    @Schema(description = "Description détaillée de la location.", example = "Appartement rénové avec balcon et cuisine moderne")
+    private String Description;
 
-        @Schema(description = "Description détaillée de la location.", example = "Appartement rénové avec balcon et cuisine moderne")
-        private String Description;
-
-        @Schema(description = "Uploader l'image associée à la location.", example = "rental-updated.jpg")
-        private MultipartFile picture;
-
-    public EditRentalDto(Long id, String name, BigDecimal surface, BigDecimal price,String Description, MultipartFile picture) {
-        this.id = id;
+    public EditRentalDto(String name, BigDecimal surface, BigDecimal price, String Description, MultipartFile picture, User owner) {
         this.name = name;
         this.surface = surface;
         this.price = price;
         this.Description = Description;
-        this.picture = picture;
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -69,13 +53,7 @@ import java.util.List;
         this.price = price;
     }
 
-    public MultipartFile getPicture() {
-        return picture;
-    }
 
-    public void setPicture(MultipartFile picture) {
-        this.picture = picture;
-    }
 
     public String getDescription() {
         return Description;
@@ -84,4 +62,6 @@ import java.util.List;
     public void setDescription(String description) {
         Description = description;
     }
+
+
 }

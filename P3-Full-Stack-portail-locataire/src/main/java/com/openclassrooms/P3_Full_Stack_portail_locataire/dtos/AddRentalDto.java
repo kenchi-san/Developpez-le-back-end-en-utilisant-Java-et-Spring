@@ -1,5 +1,6 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -12,8 +13,6 @@ import java.util.List;
 
 public class AddRentalDto {
 
-    @Schema(description = "Donner la description de la location", example = "Appartement T3 avec vue sur la mer")
-    private final String Description;
     @Schema(description = "Identifiant unique de la location", example = "1")
     private Long id;
 
@@ -38,18 +37,17 @@ public class AddRentalDto {
     private MultipartFile picture;
 
     @Schema(description = "Propriétaire de la location, identifié par son email")
+    @JsonProperty("owner_id")
     private User owner;
-//    private List<MessageDto> messages;
 
-    public AddRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String Description, MultipartFile  picture, User owner) {
+    public AddRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String description, MultipartFile  picture, User owner) {
         this.id = id;
         this.name = name;
         this.surface = surface;
         this.price = price;
-        this.Description = Description;
+        this.description = description;
         this.picture = picture;
         this.owner = owner;
-//        this.messages = messages;
 
     }
 
@@ -94,7 +92,7 @@ public class AddRentalDto {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public User getOwner() {
@@ -103,6 +101,10 @@ public class AddRentalDto {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
 
