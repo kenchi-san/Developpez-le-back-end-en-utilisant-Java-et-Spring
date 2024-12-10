@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/message")
+@RequestMapping("/messages")
 public class MessageController {
 
     private final MessageService messageService;
@@ -30,7 +30,7 @@ public class MessageController {
         this.userService = userService;
     }
 
-    @PostMapping("/add/{rentalId}")
+    @PostMapping("/{rentalId}")
     public ResponseEntity<String> addMessage(@PathVariable Long rentalId,@Valid @RequestBody CreateMessageDto createMessageDto) {
 
         // Obtenez l'utilisateur connecté
@@ -59,9 +59,7 @@ public class MessageController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Message ajouté avec succès !");
     }
 
-    /**
-     * Éditer un message attaché à un rental.
-     */
+
     @PutMapping("rental/{rentalId}/edit/{messageId}")
     public ResponseEntity<String> editMessage(
             @PathVariable Long rentalId,
@@ -103,9 +101,7 @@ public class MessageController {
         return ResponseEntity.ok("Message modifié avec succès !");
     }
 
-    /**
-     * Supprimer un message attaché à un rental.
-     */
+
     @DeleteMapping("rental/{rentalId}/delete/{messageId}")
     public ResponseEntity<String> deleteMessage(
             @PathVariable Long rentalId,

@@ -1,34 +1,32 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.User;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.math.BigDecimal;
-import java.util.List;
 
+@Schema(description = "DTO utilisé pour modifier les informations d'une location.")
 public class EditRentalDto {
-    private Long id;
-    private String name;
-    private BigDecimal surface;  // surface
-    private BigDecimal price;    // prix
-    private String Description;
-    private String picture;    // image
-    private List<MessageDto> messages;
 
-    public EditRentalDto(Long id, String name, BigDecimal surface, BigDecimal price,String Description, String picture,List<MessageDto> messages) {
-        this.id = id;
+    @Schema(description = "Nom de la location.", example = "Appartement T3 rénové")
+    private String name;
+
+    @Schema(description = "Surface de la location en mètres carrés.", example = "85.5")
+    private BigDecimal surface;
+
+    @Schema(description = "Prix de la location en euros.", example = "1300.00")
+    private BigDecimal price;
+
+    @Schema(description = "Description détaillée de la location.", example = "Appartement rénové avec balcon et cuisine moderne")
+    private String Description;
+
+    public EditRentalDto(String name, BigDecimal surface, BigDecimal price, String Description, MultipartFile picture, User owner) {
         this.name = name;
         this.surface = surface;
         this.price = price;
         this.Description = Description;
-        this.picture = picture;
-        this.messages = messages;
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -55,13 +53,7 @@ public class EditRentalDto {
         this.price = price;
     }
 
-    public String getPicture() {
-        return picture;
-    }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
 
     public String getDescription() {
         return Description;
@@ -70,4 +62,6 @@ public class EditRentalDto {
     public void setDescription(String description) {
         Description = description;
     }
+
+
 }
