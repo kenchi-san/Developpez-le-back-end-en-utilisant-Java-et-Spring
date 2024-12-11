@@ -41,8 +41,8 @@ public class AuthenticationController {
                     registeredUser.getId(),
                     registeredUser.getName(),
                     registeredUser.getEmail(),
-                    "Inscription réussie"
-            );
+                    registeredUser.getCreatedAt()
+                    );
 
             // Retour de la réponse HTTP
             return ResponseEntity.ok(registerResponse);
@@ -50,12 +50,12 @@ public class AuthenticationController {
         } catch (IllegalArgumentException e) {
             // Cas où l'utilisateur existe déjà ou mauvais format des données
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new RegisterResponse(null, null, null, "Échec de l'inscription : " + e.getMessage()));
+                    .body(new RegisterResponse(null, null, null, null));
 
         } catch (Exception e) {
             // Gestion des erreurs générales
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new RegisterResponse(null, null, null, "Erreur interne du serveur"));
+                    .body(new RegisterResponse(null, null, null, null));
         }
     }
 

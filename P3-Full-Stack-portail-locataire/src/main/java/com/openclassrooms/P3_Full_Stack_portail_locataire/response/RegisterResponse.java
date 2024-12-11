@@ -1,21 +1,22 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDateTime;
+
 public class RegisterResponse {
     private Long userId;
     private String email;
     private String name;
-    private String message;
-
-    // Constructeur par défaut
-    public RegisterResponse() {
-    }
+    @JsonProperty("created_at")
+    private LocalDateTime createdAt;
 
     // Constructeur avec arguments
-    public RegisterResponse(Long userId, String name,String email, String message) {
+    public RegisterResponse(Long userId, String name,String email,LocalDateTime createdAt) {
         this.userId = userId;
         this.name = name;
         this.email = email;
-        this.message = message;
+        this.createdAt = createdAt;
     }
 
     // Getters et setters
@@ -35,20 +36,13 @@ public class RegisterResponse {
         this.email = email;
     }
 
-    public String getMessage() {
-        return message;
-    }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
     @Override
     public String toString() {
         return "RegisterResponse{" +
                 "userId=" + userId +
                 ", email='" + email + '\'' +
-                ", message='" + message + '\'' +
                 '}';
     }
 
@@ -58,5 +52,13 @@ public class RegisterResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

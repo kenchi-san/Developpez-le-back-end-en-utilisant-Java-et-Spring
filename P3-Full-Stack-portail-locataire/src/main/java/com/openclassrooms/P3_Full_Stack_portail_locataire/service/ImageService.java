@@ -30,7 +30,7 @@ public class ImageService {
             picture.transferTo(fileToSave);
 
             // Retourner l'URL de l'image, accessible sous /imgs/nom_de_fichier
-            return "/imgs/" + fileName;
+            return "api/imgs/" + fileName;
         } catch (IOException e) {
             throw new RuntimeException("Erreur lors de l'enregistrement de l'image.", e);
         }

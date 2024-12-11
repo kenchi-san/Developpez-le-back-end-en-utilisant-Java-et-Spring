@@ -196,8 +196,6 @@ public class RentalController {
 
         if (rental.isPresent()) {
             Rental foundRental = rental.get();
-
-
             // Création du DTO pour le Rental
             DetailRentalDto rentalDto = new DetailRentalDto(
                     foundRental.getId(),

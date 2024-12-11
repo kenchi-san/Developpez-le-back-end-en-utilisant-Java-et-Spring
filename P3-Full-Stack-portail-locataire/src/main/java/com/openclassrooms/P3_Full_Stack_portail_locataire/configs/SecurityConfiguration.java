@@ -39,7 +39,8 @@ public class SecurityConfiguration {
                                 "/auth/register",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "user/**"
+                                "user/**",
+                                "/imgs/**"
                         ).permitAll()
                         .requestMatchers("/user/{id:[0-9]+}").permitAll()
                         // Toutes les autres routes nécessitent une authentification
