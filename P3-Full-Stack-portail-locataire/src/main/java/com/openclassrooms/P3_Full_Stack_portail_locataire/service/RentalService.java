@@ -84,21 +84,4 @@ private final ImageService imageService;
             );
         }).collect(Collectors.toList());
     }
-
-    public List<MessageDto> toMessageDTOList(List<Message> messages) {
-        return messages.stream()
-                .map(this::toMessageDTO)  // Pour chaque Message, on utilise la méthode toMessageDTO pour le convertir
-                .collect(Collectors.toList());  // Collecte le résultat dans une liste
-    }
-
-    private MessageDto toMessageDTO(Message message) {
-        return new MessageDto(
-                message.getId(),
-                message.getRental() != null ? message.getRental().getId() : null,  // Id du Rental associé
-                message.getUser() != null ? message.getUser().getId() : null,  // Id de l'Utilisateur associé
-                message.getMessage(),  // Contenu du message
-                message.getCreatedAt(),  // Date de création du message
-                message.getUpdatedAt()   // Date de mise à jour du message
-        );
-    }
 }

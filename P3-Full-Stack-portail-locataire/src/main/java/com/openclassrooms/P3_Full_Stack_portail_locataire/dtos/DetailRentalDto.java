@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DetailRentalDto {
     private Long id;
@@ -20,6 +21,7 @@ public class DetailRentalDto {
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
     private User owner;
+    private List<MessageDto> message;
     public DetailRentalDto(Long id, String name, BigDecimal surface, BigDecimal price, String picture,LocalDateTime createdAt,LocalDateTime updatedAt,String description,User owner) {
         this.id = id;
         this.name = name;
@@ -105,9 +107,21 @@ public class DetailRentalDto {
     public void setOwner(User owner) {
         this.owner = owner;
     }
+    public List<MessageDto> getMessage() {
+        return message;
+    }
 
+    public void setMessage(List<MessageDto> message) {
+        this.message = message;
+    }
     @Override
     public String toString() {
+        String messageStr = (message != null && !message.isEmpty())
+                ? message.stream()
+                .map(MessageDto::toString)  // Appel de toString() de chaque MessageDto
+                .collect(Collectors.joining(", ")) // Jointure des chaînes des message
+                : "Aucun message";
+
         return "DetailRentalDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
@@ -115,7 +129,8 @@ public class DetailRentalDto {
                 ", creation='" + createdAt + '\'' +
                 ", modifier='" + updatedAt + '\'' +
                 ", price=" + price +
-                ", propriétaire=" + owner.getId() +
+                ", propriétaire=" + (owner != null ? owner.getId() : null) + // Ajout vérification null pour owner
+                ", message=[" + messageStr + "]" +
                 '}';
     }
 

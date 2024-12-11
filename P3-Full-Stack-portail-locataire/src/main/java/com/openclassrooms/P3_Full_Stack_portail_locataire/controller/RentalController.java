@@ -1,12 +1,14 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.controller;
 
 import com.openclassrooms.P3_Full_Stack_portail_locataire.dtos.*;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Message;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.User;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.service.ImageService;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.service.MessageService;
 import com.openclassrooms.P3_Full_Stack_portail_locataire.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -190,12 +192,39 @@ public class RentalController {
                 .orElse(ResponseEntity.notFound().build()); // 404 si l'entité n'existe pas
     }
 
+    @Operation(
+            summary = "Récupérer les détails d'un bien locatif",
+            description = "Cet endpoint permet de récupérer les informations d'un bien locatif spécifique en utilisant son identifiant unique.",
+            parameters = {
+                    @Parameter(
+                            name = "id",
+                            description = "Identifiant unique du bien locatif",
+                            required = true,
+                            in = ParameterIn.PATH
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Détails du bien locatif récupérés avec succès",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = DetailRentalDto.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Bien locatif non trouvé pour l'ID spécifié"
+                    )
+            }
+    )
     @GetMapping("/{id}")
     public ResponseEntity<DetailRentalDto> getRentalById(@PathVariable Long id) {
         Optional<Rental> rental = rentalService.getRentalById(id);
 
         if (rental.isPresent()) {
             Rental foundRental = rental.get();
+
             // Création du DTO pour le Rental
             DetailRentalDto rentalDto = new DetailRentalDto(
                     foundRental.getId(),
@@ -208,8 +237,23 @@ public class RentalController {
                     foundRental.getDescription(),
                     foundRental.getOwner()
             );
-            System.out.println("ID: " + id + ", Rental Details: " + rentalDto);
+// Récupération des messages associés à cette location
+            List<Message> messages = messageService.getMessagesByRentalId(id);
 
+            // Conversion des messages en MessageDto
+            List<MessageDto> messageDtos = messages.stream()
+                    .map(msg -> new MessageDto(
+                            msg.getId(),
+                            msg.getRental().getId(),
+                            msg.getUser().getId(),
+                            msg.getCreatedAt(),
+                            msg.getUpdatedAt()
+                    ))
+                    .collect(Collectors.toList());
+
+            // Ajouter les messages au DTO de la location
+            rentalDto.setMessage(messageDtos);
+            System.out.println(rentalDto);
             return ResponseEntity.ok(rentalDto);
         } else {
             return ResponseEntity.notFound().build();

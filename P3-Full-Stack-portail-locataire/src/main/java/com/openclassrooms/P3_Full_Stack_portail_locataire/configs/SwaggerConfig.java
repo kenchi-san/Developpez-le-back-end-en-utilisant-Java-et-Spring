@@ -13,15 +13,17 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("API Rent Management").version("1.0").description("API for managing rentals"))
+                .info(new Info().title("API Rent Management")
+                        .version("1.0")
+                        .description("API for managing rentals"))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new io.swagger.v3.oas.models.Components()
                         .addSecuritySchemes("bearerAuth",
                                 new SecurityScheme()
-                                        .name("bearerAuth")
-                                        .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")
+                                        .name("bearerAuth")   // Le nom du schéma de sécurité
+                                        .type(SecurityScheme.Type.HTTP)  // Type HTTP
+                                        .scheme("bearer")  // Type de schéma HTTP : "bearer"
+                                        .bearerFormat("JWT")  // Spécifie que le format du token est JWT
                         ));
     }
 }
