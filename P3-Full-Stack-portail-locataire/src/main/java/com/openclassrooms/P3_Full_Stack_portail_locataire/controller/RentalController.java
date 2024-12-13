@@ -74,7 +74,7 @@ public class RentalController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Location créée avec succès"),
             @ApiResponse(responseCode = "400", description = "Erreur de validation dans les données fournies"),
-            @ApiResponse(responseCode = "403", description = "Vous devez être connecté")
+            @ApiResponse(responseCode = "401", description = "Vous devez être connecté")
     })
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<Rental> createRental(

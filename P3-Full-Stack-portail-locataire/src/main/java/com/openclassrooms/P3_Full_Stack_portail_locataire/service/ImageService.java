@@ -36,13 +36,6 @@ public class ImageService {
         }
     }
 
-    // Méthode pour supprimer une image, si nécessaire lors de l'édition
-    public void deletePicture(String imageUrl) {
-        File fileToDelete = new File(uploadDir, imageUrl.replace("/imgs/", ""));
-        if (fileToDelete.exists()) {
-            fileToDelete.delete();
-        }
-    }
     public String getImageUrl(String pictureName) {
         // Retourner l'URL complète de l'image
         return baseUrl + pictureName;

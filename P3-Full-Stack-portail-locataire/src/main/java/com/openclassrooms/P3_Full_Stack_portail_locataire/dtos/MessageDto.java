@@ -71,8 +71,6 @@ public class MessageDto {
                 "id=" + id +
                 ", rentalId=" + rentalId +
                 ", userId=" + userId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

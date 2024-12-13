@@ -31,8 +31,8 @@ public class UserController {
         // Mappe l'utilisateur vers un DTO pour le retourner au front
         MeUserDto meUserDto = new MeUserDto(
                 user.getId(),
-                user.getName(),
                 user.getEmail(),
+                user.getName(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );

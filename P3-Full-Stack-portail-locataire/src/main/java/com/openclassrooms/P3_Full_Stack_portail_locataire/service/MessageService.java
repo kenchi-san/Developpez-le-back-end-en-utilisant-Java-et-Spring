@@ -24,9 +24,6 @@ public class MessageService {
         return messageRepository.findById(id);
     }
     public List<Message> getMessagesByRentalId(Long rentalId) {
-        return messageRepository.findByRentalId(rentalId);  // Recherche par ID de location
-    }
-    public void delete(Message message) {
-        messageRepository.delete(message);
+        return messageRepository.findByRentalId(rentalId);
     }
 }
