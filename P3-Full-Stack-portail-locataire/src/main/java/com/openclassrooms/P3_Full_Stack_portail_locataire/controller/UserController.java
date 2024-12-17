@@ -9,10 +9,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/users")
+@RequestMapping("/user")
 @RestController
 public class UserController {
     private final UserService userService;
@@ -21,32 +22,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<MeUserDto> authenticatedUser() {
-        // Obtenez l'authentification actuelle
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    @GetMapping("/{userId}")
+    public ResponseEntity<MeUserDto> getUserById(@PathVariable Long userId) {
+        // Cherche l'utilisateur par son ID
+        User user = userService.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'ID : " + userId));
 
-        // Vérifiez si l'utilisateur est authentifié
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401 Unauthorized
-        }
-
-        // Récupérez l'email ou le nom d'utilisateur à partir du principal
-        String email = authentication.getName(); // Généralement l'email ou username
-
-        // Chargez l'utilisateur depuis la base de données
-        User currentUser = userService.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé avec l'email : " + email));
-
-        // Mappez l'entité User vers le DTO
+        // Mappe l'utilisateur vers un DTO pour le retourner au front
         MeUserDto meUserDto = new MeUserDto(
-                currentUser.getId(),
-                currentUser.getEmail(),
-                currentUser.getName(),
-                currentUser.getCreatedAt()
+                user.getId(),
+                user.getEmail(),
+                user.getName(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
         );
 
-        // Retournez le DTO
-        return ResponseEntity.ok(meUserDto);
+        return ResponseEntity.ok(meUserDto); // Retourne le DTO avec un statut HTTP 200 OK
     }
 }

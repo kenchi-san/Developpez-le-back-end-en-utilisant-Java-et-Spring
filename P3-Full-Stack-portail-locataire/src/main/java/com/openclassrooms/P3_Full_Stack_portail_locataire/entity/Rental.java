@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name = "RENTALS")
@@ -37,17 +38,9 @@ public class Rental {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "rental",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
-//   TODO a supprimer plus tard
-//    @PrePersist
-//    public void setDefaultOwner() {
-//        if (this.owner == null) {
-//            this.owner = new User();
-//            this.owner.setId(1);
-//        }
-//    }
 
 
     public Long getId() {

@@ -5,18 +5,15 @@ public class LoginResponse {
     private long expiresIn;
     private String message;
 
-    // Constructeur par défaut
     public LoginResponse() {
     }
 
-    // Constructeur avec arguments
     public LoginResponse(String token, long expiresIn, String message) {
         this.token = token;
         this.expiresIn = expiresIn;
         this.message = message;
     }
 
-    // Getters et setters
     public String getToken() {
         return token;
     }

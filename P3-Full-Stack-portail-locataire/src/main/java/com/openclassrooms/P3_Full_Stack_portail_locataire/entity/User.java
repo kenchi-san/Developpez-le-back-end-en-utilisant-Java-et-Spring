@@ -1,4 +1,6 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,7 +38,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
-    // Automatically set timestamps before persisting or updating
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -47,7 +48,6 @@ public class User implements UserDetails {
         updatedAt = LocalDateTime.now();
     }
 
-    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -122,31 +122,26 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        // Using email as the username
         return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        // All accounts are considered non-expired by default
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        // All accounts are considered non-locked by default
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        // All credentials are considered non-expired by default
         return true;
     }
 
     @Override
     public boolean isEnabled() {
-        // All accounts are enabled by default
         return true;
     }
 }

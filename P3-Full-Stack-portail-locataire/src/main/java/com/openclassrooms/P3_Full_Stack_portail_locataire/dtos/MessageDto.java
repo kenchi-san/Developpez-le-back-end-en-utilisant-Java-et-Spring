@@ -1,29 +1,28 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
 import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Message;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.Rental;
+import com.openclassrooms.P3_Full_Stack_portail_locataire.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class MessageDto {
 
     private Long id;
-    private Long rentalId;  // ID du Rental associé
-    private Long userId;    // ID de l'utilisateur associé
-    private String message; // Le contenu du message
+    private Long rentalId;
+    private Long userId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Constructeur
-    public MessageDto(Long id, Long rentalId, Long userId, String message, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public MessageDto(Long id, Long rentalId, Long userId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.rentalId = rentalId;
         this.userId = userId;
-        this.message = message;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    // Getters et Setters
     public Long getId() {
         return id;
     }
@@ -65,12 +64,12 @@ public class MessageDto {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    @Override
+    public String toString() {
+        return "MessageDto{" +
+                "id=" + id +
+                ", rentalId=" + rentalId +
+                ", userId=" + userId +
+                '}';
     }
 }

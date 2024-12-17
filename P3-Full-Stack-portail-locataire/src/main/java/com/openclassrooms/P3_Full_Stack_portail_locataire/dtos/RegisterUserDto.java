@@ -1,12 +1,17 @@
 package com.openclassrooms.P3_Full_Stack_portail_locataire.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDateTime;
+
 public class RegisterUserDto {
     private String email;
     private String password;
     private String name;
+    @JsonProperty("created_at")
+    private LocalDateTime createdAt;
 
 
-    // Getters et setters
     public String getEmail() {
         return email;
     }
@@ -30,5 +35,13 @@ public class RegisterUserDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
