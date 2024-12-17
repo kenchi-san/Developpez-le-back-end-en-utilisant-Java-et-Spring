@@ -60,7 +60,6 @@ public class MessageController {
 
 
 
-            // Sauvegardez le message
             messageService.save(message);
 
             return ResponseEntity.status(HttpStatus.CREATED)

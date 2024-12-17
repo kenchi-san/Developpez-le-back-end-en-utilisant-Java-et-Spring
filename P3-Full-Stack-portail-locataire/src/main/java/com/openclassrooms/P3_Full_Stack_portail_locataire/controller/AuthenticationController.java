@@ -44,7 +44,6 @@ public class AuthenticationController {
                     registeredUser.getCreatedAt()
                     );
 
-            // Retour de la réponse HTTP
             return ResponseEntity.ok(registerResponse);
 
         } catch (IllegalArgumentException e) {

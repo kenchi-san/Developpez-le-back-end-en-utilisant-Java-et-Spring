@@ -96,7 +96,7 @@ public class RentalController {
                             )
                     )
             )
-            @Valid @ModelAttribute AddRentalDto rentalDto // Notez @ModelAttribute
+            @Valid @ModelAttribute AddRentalDto rentalDto
     ) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User owner = userService.findByEmail(email)

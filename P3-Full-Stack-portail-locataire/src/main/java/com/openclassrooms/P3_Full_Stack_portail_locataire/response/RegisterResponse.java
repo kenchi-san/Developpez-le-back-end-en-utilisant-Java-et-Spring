@@ -11,7 +11,6 @@ public class RegisterResponse {
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
 
-    // Constructeur avec arguments
     public RegisterResponse(Long userId, String name,String email,LocalDateTime createdAt) {
         this.userId = userId;
         this.name = name;
@@ -19,7 +18,6 @@ public class RegisterResponse {
         this.createdAt = createdAt;
     }
 
-    // Getters et setters
     public Long getUserId() {
         return userId;
     }

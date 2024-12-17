@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 public class DetailRentalDto {
     private Long id;
     private String name;
-    private BigDecimal surface;  // surface
-    private BigDecimal price;    // prix
-    private String picture; // image
+    private BigDecimal surface;
+    private BigDecimal price;
+    private String picture;
     private String description;
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
@@ -34,7 +34,6 @@ public class DetailRentalDto {
         this.owner = owner;
     }
 
-    // Getters et Setters
     public Long getId() {
         return id;
     }
@@ -113,25 +112,6 @@ public class DetailRentalDto {
 
     public void setMessage(List<MessageDto> message) {
         this.message = message;
-    }
-    @Override
-    public String toString() {
-        String messageStr = (message != null && !message.isEmpty())
-                ? message.stream()
-                .map(MessageDto::toString)  // Appel de toString() de chaque MessageDto
-                .collect(Collectors.joining(", ")) // Jointure des chaînes des message
-                : "Aucun message";
-
-        return "DetailRentalDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", creation='" + createdAt + '\'' +
-                ", modifier='" + updatedAt + '\'' +
-                ", price=" + price +
-                ", propriétaire=" + (owner != null ? owner.getId() : null) + // Ajout vérification null pour owner
-                ", message=[" + messageStr + "]" +
-                '}';
     }
 
 }

@@ -6,7 +6,6 @@ public class UpdateMessageDto {
     @NotBlank(message = "Le contenu du message est obligatoire.")
     private String message;
 
-    // Getters et Setters
     public String getMessage() {
         return message;
     }

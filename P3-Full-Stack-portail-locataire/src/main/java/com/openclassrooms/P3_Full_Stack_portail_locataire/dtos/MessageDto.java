@@ -10,11 +10,11 @@ import java.util.List;
 public class MessageDto {
 
     private Long id;
-    private Long rentalId;  // ID du Rental associé
-    private Long userId;    // ID de l'utilisateur associé
+    private Long rentalId;
+    private Long userId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    // Constructeur
+
     public MessageDto(Long id, Long rentalId, Long userId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.rentalId = rentalId;
@@ -23,7 +23,6 @@ public class MessageDto {
         this.updatedAt = updatedAt;
     }
 
-    // Getters et Setters
     public Long getId() {
         return id;
     }

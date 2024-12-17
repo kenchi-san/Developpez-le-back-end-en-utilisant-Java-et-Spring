@@ -33,7 +33,6 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable()) // Désactive la protection CSRF
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configure CORS
                 .authorizeHttpRequests(auth -> auth
-                        // Routes publiques
                         .requestMatchers(
                                 "/auth/login",
                                 "/auth/register",
@@ -43,10 +42,9 @@ public class SecurityConfiguration {
                                 "/imgs/**"
                         ).permitAll()
                         .requestMatchers("/user/{id:[0-9]+}").permitAll()
-                        // Toutes les autres routes nécessitent une authentification
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Mode stateless
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider) // Fournisseur d'authentification
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Ajouter le filtre JWT
                 .logout(logout -> logout

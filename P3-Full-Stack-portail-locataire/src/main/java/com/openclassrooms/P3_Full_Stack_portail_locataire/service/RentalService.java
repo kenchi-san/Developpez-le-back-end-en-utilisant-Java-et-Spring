@@ -37,47 +37,23 @@ private final ImageService imageService;
         return rentalRepository.findById(id);
     }
 
-    public Optional<DetailRentalDto> getDetailRentalById(Long id) {
-        // Récupérer le Rental par son id
-        return rentalRepository.findById(id)
-                .map(rental -> {
-                    String imageUrl = rental.getPicture() != null ? imageService.getImageUrl(rental.getPicture()) : null;
-
-                    // Créer un DetailRentalDto
-                    return new DetailRentalDto(
-                            rental.getId(),
-                            rental.getName(),
-                            rental.getSurface(),
-                            rental.getPrice(),
-                            imageUrl,
-                            rental.getCreatedAt(),
-                            rental.getUpdatedAt(),
-                            rental.getDescription(),
-                            rental.getOwner()
-
-                    );
-                });
-    }
     public List<AllInfoRentalDto> getAllRentals() {
-        // Récupérer toutes les locations
         List<Rental> rentals = rentalRepository.findAll();
 
         // Pour chaque location, récupérer les messages associés et créer un DTO avec la liste des messages
         return rentals.stream().map(rental -> {
             // Récupérer les messages associés à ce rental
-//            List<Message> messages = messageRepository.findByRentalId(rental.getId());
             User owner_id = rental.getOwner();
-            // Convertir les messages en MessageDto
-//            List<MessageDto> messageDtos = toMessageDTOList(messages);
+
 
             // Retourner un DTO de Rental avec la liste des MessageDto et les nouveaux champs
             return new AllInfoRentalDto(
                     rental.getId(),
                     rental.getName(),
-                    rental.getSurface(),   // Ajout de la surface
-                    rental.getPrice(),     // Ajout du prix
+                    rental.getSurface(),
+                    rental.getPrice(),
                     rental.getPicture(),
-                    rental.getDescription(), // Ajout de l'image
+                    rental.getDescription(),
                     owner_id,
                     rental.getCreatedAt(),
                     rental.getUpdatedAt()

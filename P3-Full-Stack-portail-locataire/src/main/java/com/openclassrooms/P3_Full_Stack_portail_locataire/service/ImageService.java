@@ -10,7 +10,7 @@ import java.io.IOException;
 @Service
 public class ImageService {
 
-    @Value("${upload.dir}")  // Définir le répertoire via application.properties ou application.yml
+    @Value("${upload.dir}")  // Définir le répertoire via application.properties
     private String uploadDir;
     private final String baseUrl = "/imgs/";
     // Méthode pour enregistrer l'image dans le répertoire `static/imgs`

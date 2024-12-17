@@ -12,7 +12,6 @@ public class RegisterUserDto {
     private LocalDateTime createdAt;
 
 
-    // Getters et setters
     public String getEmail() {
         return email;
     }

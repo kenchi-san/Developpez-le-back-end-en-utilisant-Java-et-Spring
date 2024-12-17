@@ -21,7 +21,6 @@ public class CreateMessageDto {
         this.user_id = user_id;
     }
 
-    // Getters et Setters
     public String getMessage() {
         return message;
     }

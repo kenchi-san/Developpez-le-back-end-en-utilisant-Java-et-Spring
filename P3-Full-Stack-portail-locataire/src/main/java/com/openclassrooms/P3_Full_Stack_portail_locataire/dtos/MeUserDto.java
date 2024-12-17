@@ -9,7 +9,6 @@ public class MeUserDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Constructeur
     public MeUserDto(Long id, String email, String name, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.email = email;
