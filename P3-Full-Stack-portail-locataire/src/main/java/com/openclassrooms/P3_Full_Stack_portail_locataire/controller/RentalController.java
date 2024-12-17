@@ -61,7 +61,6 @@ public class RentalController {
     public ResponseEntity<Map<String, List<AllInfoRentalDto>>> getAllRentals() {
         // Récupérer toutes les locations depuis le service
         List<AllInfoRentalDto> rentals = rentalService.getAllRentals();
-//System.out.println(rentals);
         // Créer une map avec la clé "rentals" et la liste des locations
         Map<String, List<AllInfoRentalDto>> response = new HashMap<>();
         response.put("rentals", rentals);
@@ -166,7 +165,6 @@ public class RentalController {
     public ResponseEntity<Rental> updateRental(
             @Parameter(description = "Identifiant de la location à modifier", example = "1")
             @PathVariable Long id,
-//            @RequestPart(value = "rentalDetails")
             @Valid EditRentalDto rentalDetails
     ) {
         return rentalService.getRentalById(id)
@@ -209,7 +207,43 @@ public class RentalController {
                             description = "Détails du bien locatif récupérés avec succès",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = DetailRentalDto.class)
+                                    schema = @Schema(implementation = DetailRentalDto.class),
+                                    examples = @ExampleObject(
+                                            name = "Exemple de réponse",
+                                            value = """
+                    {
+                      "id": 1,
+                      "name": "Appartement T3 rénové",
+                      "surface": 85.5,
+                      "price": 1300,
+                      "picture": "https://example.com/image.jpg",
+                      "description": "Appartement rénové avec vue sur la mer.",
+                      "created_at": "2024-12-01T12:00:00",
+                      "updated_at": "2024-12-10T15:30:00",
+                      "owner": {
+                        "id": 10,
+                        "email": "proprietaire@example.com",
+                        "name": "Jean Dupont"
+                      },
+                      "message": [
+                        {
+                          "id": 1,
+                          "rentalId": 1,
+                          "userId": 2,
+                          "createdAt": "2024-12-04T00:08:59",
+                          "updatedAt": "2024-12-04T00:08:59"
+                        },
+                        {
+                          "id": 2,
+                          "rentalId": 1,
+                          "userId": 3,
+                          "createdAt": "2024-12-05T10:15:30",
+                          "updatedAt": "2024-12-05T10:15:30"
+                        }
+                      ]
+                    }
+                    """
+                                    )
                             )
                     ),
                     @ApiResponse(
